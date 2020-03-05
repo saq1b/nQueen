@@ -20,5 +20,8 @@ n=4 # 4 queen problem
 i=0
 board=[random.randint(0,n-1) for i in range(n)]
 print(board)
-
-print(get_h_cost(board))
+for i in range(n):
+  for j in range(n):
+    print(get_h_cost(board),end=' ')
+    board[i]=j
+  print()
