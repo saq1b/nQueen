@@ -1,4 +1,8 @@
 import random
+import copy
+from colorama import init
+from termcolor import colored
+init()
 def get_h_cost(board):
   h = 0
   for i in range(len(board)):
@@ -17,11 +21,34 @@ def get_h_cost(board):
 
 #main
 n=4 # 4 queen problem
-i=0
 board=[random.randint(0,n-1) for i in range(n)]
-print(board)
-for i in range(n):
-  for j in range(n):
-    print(get_h_cost(board),end=' ')
-    board[i]=j
-  print()
+board=[3,0,1,0]
+for iterations in range(3):
+  bestMove=(0,board[0])  # default move = don't change anything
+  needToChange=False
+  bestCost=get_h_cost(board)  # consider initial arrangement as the one with best/min heuristic cost
+  tempBoard=[]
+  # print(board,end=' '); print(bestCost)  # initial arrangement and it's cost
+  for i in range(n):    # column
+    tempBoard=copy.deepcopy(board) # start with original board arrangement
+    print(tempBoard,end=' '); print(get_h_cost(tempBoard),end=' ')
+    for j in range(n-1):  # changing row number
+      tempBoard[i]=(tempBoard[i]+1)%n
+      currentCost=get_h_cost(tempBoard)
+      print(tempBoard,end=' '); print(currentCost,end=' '); print(bestCost,end=' ')
+      if currentCost < bestCost:
+        bestCost=get_h_cost(tempBoard)
+        bestMove=(i,tempBoard[i])
+        needToChange=True
+      # print("col "+str(i)+" row "+str(j)+" current Cost "+str(currentCost)+" best Cost "+str(bestCost))
+      # print(colored("replaced "+str(i)+" with "+str(j)))
+    print()
+    # print(str(tempBoard) + str(bestCost))
+  print("Best Move is "+str(bestMove))
+  tempBoard=copy.deepcopy(board)
+  tempBoard[bestMove[0]]=bestMove[1]
+  board=copy.deepcopy(tempBoard)
+  print(colored(str(tempBoard) + str(bestCost), "green"))
+  if(not needToChange):
+    break
+print(colored(str(tempBoard) + str(bestCost), "red"))
