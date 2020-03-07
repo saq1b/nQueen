@@ -20,7 +20,7 @@ def get_h_cost(board):
   return h
 
 #main
-n=5 # 5 queen problem
+n=5 # n queen problem
 # board=[random.randint(0,n-1) for i in range(n)]
 # board=[3,0,1,0]
 bestCost=float('inf')
@@ -57,7 +57,7 @@ for iterations in range(20):
       board=copy.deepcopy(tempBoard)
       print(colored(str(tempBoard) + str(bestCost), "green"))
     else:
-      print()
+      print("No more improvement possible\n")
       break
   if bestCost==0:
     break
