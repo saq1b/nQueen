@@ -20,35 +20,45 @@ def get_h_cost(board):
   return h
 
 #main
-n=4 # 4 queen problem
-board=[random.randint(0,n-1) for i in range(n)]
-board=[3,0,1,0]
-for iterations in range(3):
-  bestMove=(0,board[0])  # default move = don't change anything
-  needToChange=False
-  bestCost=get_h_cost(board)  # consider initial arrangement as the one with best/min heuristic cost
-  tempBoard=[]
-  # print(board,end=' '); print(bestCost)  # initial arrangement and it's cost
-  for i in range(n):    # column
-    tempBoard=copy.deepcopy(board) # start with original board arrangement
-    print(tempBoard,end=' '); print(get_h_cost(tempBoard),end=' ')
-    for j in range(n-1):  # changing row number
-      tempBoard[i]=(tempBoard[i]+1)%n
-      currentCost=get_h_cost(tempBoard)
-      print(tempBoard,end=' '); print(currentCost,end=' '); print(bestCost,end=' ')
-      if currentCost < bestCost:
-        bestCost=get_h_cost(tempBoard)
-        bestMove=(i,tempBoard[i])
-        needToChange=True
-      # print("col "+str(i)+" row "+str(j)+" current Cost "+str(currentCost)+" best Cost "+str(bestCost))
-      # print(colored("replaced "+str(i)+" with "+str(j)))
-    print()
-    # print(str(tempBoard) + str(bestCost))
-  print("Best Move is "+str(bestMove))
-  tempBoard=copy.deepcopy(board)
-  tempBoard[bestMove[0]]=bestMove[1]
-  board=copy.deepcopy(tempBoard)
-  print(colored(str(tempBoard) + str(bestCost), "green"))
-  if(not needToChange):
+n=5 # 5 queen problem
+# board=[random.randint(0,n-1) for i in range(n)]
+# board=[3,0,1,0]
+bestCost=float('inf')
+for iterations in range(20):
+  board=[random.randint(0,n-1) for i in range(n)]
+  # board=[3,2,1,2]
+  while(1):
+    bestMove=(-1,-1)
+    needToChange=False
+    bestCost=get_h_cost(board)  # consider initial arrangement as the one with best/min heuristic cost
+    if bestCost==0:
+      break
+    tempBoard=[]
+    # print(board,end=' '); print(bestCost)  # initial arrangement and it's cost
+    for i in range(n):    # column
+      tempBoard=copy.deepcopy(board) # start with original board arrangement
+      print(tempBoard,end=' '); print(get_h_cost(tempBoard),end=' ')
+      for j in range(n-1):  
+        tempBoard[i]=(tempBoard[i]+1)%n # changing row number
+        currentCost=get_h_cost(tempBoard)
+        print(tempBoard,end=' '); print(currentCost,end=' '); print(bestCost,end=' ')
+        if currentCost < bestCost:
+          bestCost=get_h_cost(tempBoard)
+          bestMove=(i,tempBoard[i])
+          needToChange=True
+        # print("col "+str(i)+" row "+str(j)+" current Cost "+str(currentCost)+" best Cost "+str(bestCost))
+        # print(colored("replaced "+str(i)+" with "+str(j)))
+      print()
+      # print(str(tempBoard) + str(bestCost))
+    if needToChange:
+      print("Best Move is "+str(bestMove))
+      tempBoard=copy.deepcopy(board)
+      tempBoard[bestMove[0]]=bestMove[1]
+      board=copy.deepcopy(tempBoard)
+      print(colored(str(tempBoard) + str(bestCost), "green"))
+    else:
+      print()
+      break
+  if bestCost==0:
     break
 print(colored(str(tempBoard) + str(bestCost), "red"))
