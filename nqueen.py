@@ -3,21 +3,16 @@ import copy
 from colorama import init
 from termcolor import colored
 init()
-def get_h_cost(board):
-  h = 0
+def heuristicCost(board):
+  cost = 0
   for i in range(len(board)):
-    #Check every column we haven't already checked
-    for j in range(i + 1,len(board)):  # i=0 1-3,2-3,3-3
-      #Queens are in the same row
-      if board[i] == board[j]:
-        h += 1
-      #Get the difference between the current column and the check column
-      offset = j - i
-      #To be a diagonal, the check column value has to be 
-      #equal to the current column value +/- the offset
-      if board[i] == board[j] - offset or board[i] == board[j] + offset:
-        h += 1
-  return h
+    for j in range(i+1, len(board)):  # check only the forward  cols i.e. i=0 1-3,2-3,3-3
+      if board[i] == board[j]:  #same row queens
+        cost+=1
+      diagonal=j-i
+      if board[i]==(board[j]-diagonal) or board[i]==(board[j]+diagonal):
+        cost += 1
+  return cost
 
 #main
 n=5 # n queen problem
@@ -30,20 +25,20 @@ for iterations in range(20):
   while(1):
     bestMove=(-1,-1)
     needToChange=False
-    bestCost=get_h_cost(board)  # consider initial arrangement as the one with best/min heuristic cost
+    bestCost=heuristicCost(board)  # consider initial arrangement as the one with best/min heuristic cost
     if bestCost==0:
       break
     tempBoard=[]
     # print(board,end=' '); print(bestCost)  # initial arrangement and it's cost
     for i in range(n):    # column
       tempBoard=copy.deepcopy(board) # start with original board arrangement
-      print(tempBoard,end=' '); print(get_h_cost(tempBoard),end=' ')
+      print(tempBoard,end=' '); print(heuristicCost(tempBoard),end=' ')
       for j in range(n-1):  
         tempBoard[i]=(tempBoard[i]+1)%n # changing row number
-        currentCost=get_h_cost(tempBoard)
+        currentCost=heuristicCost(tempBoard)
         print(tempBoard,end=' '); print(currentCost,end=' '); print(bestCost,end=' ')
         if currentCost < bestCost:
-          bestCost=get_h_cost(tempBoard)
+          bestCost=heuristicCost(tempBoard)
           bestMove=(i,tempBoard[i])
           needToChange=True
         # print("col "+str(i)+" row "+str(j)+" current Cost "+str(currentCost)+" best Cost "+str(bestCost))
