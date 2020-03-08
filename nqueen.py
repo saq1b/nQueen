@@ -15,13 +15,14 @@ def heuristicCost(board):
   return cost
 
 #main
-n=5 # n queen problem
+n=8 # n queen problem
 # board=[random.randint(0,n-1) for i in range(n)]
 # board=[3,0,1,0]
 bestCost=float('inf')
 for iterations in range(20):
   board=[random.randint(0,n-1) for i in range(n)]
   # board=[3,2,1,2]
+  # board=[5, 5, 0, 6, 3, 7, 2, 3]
   while(1):
     bestMove=(-1,-1)
     needToChange=False
@@ -47,9 +48,10 @@ for iterations in range(20):
       # print(str(tempBoard) + str(bestCost))
     if needToChange:
       print("Best Move is "+str(bestMove))
-      tempBoard=copy.deepcopy(board)
-      tempBoard[bestMove[0]]=bestMove[1]
-      board=copy.deepcopy(tempBoard)
+      # tempBoard=copy.deepcopy(board)
+      # tempBoard[bestMove[0]]=bestMove[1]
+      # board=copy.deepcopy(tempBoard)
+      board[bestMove[0]]=bestMove[1]
       print(colored(str(tempBoard) + str(bestCost), "green"))
     else:
       print("No more improvement possible\n")
